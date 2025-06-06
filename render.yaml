@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: blindtest-api
+    env: node
+    plan: free
+    buildCommand: npm install && npx tsc
+    startCommand: node dist/app.js
+    rootDir: server
