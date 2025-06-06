@@ -1,17 +1,17 @@
 // ---------------------------
-// FILE: server/routes/generate-pdf.ts
+// FILE: server/routes/download-zip.ts
 // ---------------------------
 import express from 'express';
-import { generatePdf } from '../utils/pdfGenerator';
+import path from 'path';
+import fs from 'fs';
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-  try {
-    const pdfBuffer = await generatePdf(req.body);
-    res.set({ 'Content-Type': 'application/pdf' });
-    res.send(pdfBuffer);
-  } catch (err) {
-    res.status(500).send('Error generating PDF');
+  const zipPath = path.join(__dirname, '../output/audio_clips.zip');
+  if (fs.existsSync(zipPath)) {
+    res.download(zipPath);
+  } else {
+    res.status(404).send('ZIP not found');
   }
 });
 
